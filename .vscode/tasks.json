@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Local Smoke Test GZ: Build",
+      "type": "process",
+      "command": ".github/actions/smoke-test/build.sh",
+      "args": [
+        "gz"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "TEMPLATE_ARGS": "{\"distro\":\"jetty\",\"imageVariant\":\"base\"}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Local Smoke Test GZ: Assert",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Local Smoke Test GZ: Build"
+      ],
+      "type": "process",
+      "command": ".github/actions/smoke-test/test.sh",
+      "args": [
+        "gz"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Local Smoke Test GZ",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Local Smoke Test GZ: Build",
+        "Local Smoke Test GZ: Assert"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "gz",
+  "version": "0.1.0",
+  "name": "Gazebo",
+  "description": "Gazebo development environment.",
+  "documentationURL": "https://github.com/athackst/devcontainer-templates/tree/main/templates/src/gz",
+  "licenseURL": "https://github.com/athackst/devcontainer-templates/blob/main/LICENSE",
+  "publisher": "althack",
+  "keywords": [
+    "gazebo",
+    "gz",
+    "robotics",
+    "ubuntu",
+    "docker"
+  ],
+  "platforms": [
+    "Gazebo",
+    "Ubuntu",
+    "C++",
+    "Python"
+  ],
+  "options": {
+    "distro": {
+      "type": "string",
+      "description": "Gazebo distribution to use.",
+      "proposals": [
+        "jetty",
+        "ionic",
+        "harmonic"
+      ],
+      "default": "jetty"
+    },
+    "imageVariant": {
+      "type": "string",
+      "description": "Container image variant to use for this Gazebo distro.",
+      "proposals": [
+        "base",
+        "dev"
+      ],
+      "default": "base"
+    }
+  }
+}

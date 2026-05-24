@@ -1,4 +1,4 @@
-name: "Release Dev Container Templates"
+name: "Release Dev Container Features And Templates"
 on:
   workflow_dispatch:
 
@@ -12,6 +12,15 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v6
+
+      - name: "Publish Features"
+        uses: devcontainers/action@v1
+        with:
+          publish-features: "true"
+          base-path-to-features: "./features/src"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Publish Templates"
         uses: devcontainers/action@v1

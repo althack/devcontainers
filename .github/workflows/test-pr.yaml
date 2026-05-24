@@ -1,4 +1,4 @@
-name: "CI - Test Templates"
+name: "CI - Test Templates And Features"
 on:
   pull_request:
 
@@ -18,6 +18,14 @@ jobs:
         with:
           template: "gz"
 
+  feature-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate feature metadata
+        run: bash features/test/test_all.sh
+
   gen-docs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
@@ -31,11 +39,16 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.CI_BOT_TOKEN }}
 
-      - name: "Publish Templates"
+      - name: "Generate Template Docs"
         uses: devcontainers/action@v1
         with:
-          publish-templates: "false"
           base-path-to-templates: "./templates/src"
+          generate-docs: "true"
+
+      - name: "Generate Feature Docs"
+        uses: devcontainers/action@v1
+        with:
+          base-path-to-features: "./features/src"
           generate-docs: "true"
 
       - uses: stefanzweifel/git-auto-commit-action@v7
@@ -45,6 +58,7 @@ jobs:
   complete:
     needs:
       - gen-docs
+      - feature-tests
       - smoke-test
     if: always()
     runs-on: ubuntu-latest
@@ -52,15 +66,22 @@ jobs:
       - name: Verify required jobs succeeded
         env:
           SMOKE_TEST_RESULT: ${{ needs.smoke-test.result }}
+          FEATURE_TESTS_RESULT: ${{ needs.feature-tests.result }}
           GEN_DOCS_RESULT: ${{ needs.gen-docs.result }}
         run: |
           set -euo pipefail
 
           echo "smoke_test: ${SMOKE_TEST_RESULT}"
+          echo "feature_tests: ${FEATURE_TESTS_RESULT}"
           echo "gen_docs: ${GEN_DOCS_RESULT}"
 
           if [[ "${SMOKE_TEST_RESULT}" != "success" ]]; then
             echo "Required job 'smoke_test' did not succeed."
+            exit 1
+          fi
+
+          if [[ "${FEATURE_TESTS_RESULT}" != "success" ]]; then
+            echo "Required job 'feature_tests' did not succeed."
             exit 1
           fi
 

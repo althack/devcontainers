@@ -1,0 +1,31 @@
+{
+  "id": "x11",
+  "version": "0.1.0",
+  "name": "X11 GUI Forwarding",
+  "description": "Configure container environment and mounts for host X11 display forwarding.",
+  "documentationURL": "https://github.com/athackst/devcontainer-templates/tree/main/features/src/x11",
+  "licenseURL": "https://github.com/athackst/devcontainer-templates/blob/main/LICENSE",
+  "options": {
+    "softwareGL": {
+      "type": "string",
+      "default": "1",
+      "proposals": [
+        "0",
+        "1"
+      ],
+      "description": "Set LIBGL_ALWAYS_SOFTWARE for GPU compatibility."
+    }
+  },
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}",
+    "XAUTHORITY": "${localEnv:XAUTHORITY}",
+    "PULSE_SERVER": "${localEnv:PULSE_SERVER}",
+    "LIBGL_ALWAYS_SOFTWARE": "${feature:softwareGL}"
+  },
+  "mounts": [
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
+  ],
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

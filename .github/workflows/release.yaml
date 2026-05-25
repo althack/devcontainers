@@ -1,19 +1,98 @@
 name: "Release Dev Container Features And Templates"
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version to publish, for example 1.2.3"
+        required: true
+        type: string
+      dry_run:
+        description: "Run the release flow without publishing packages or committing version updates"
+        required: false
+        default: true
+        type: boolean
+
+  release:
+    types:
+      - published
 
 jobs:
   deploy:
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.event_name == 'release' || github.ref == 'refs/heads/main' || github.event.inputs.dry_run == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: write
       pull-requests: write
     steps:
+      - name: Resolve release settings
+        id: settings
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
+            raw_version="${RELEASE_TAG}"
+            dry_run="false"
+            mode="release"
+          else
+            raw_version="${INPUT_VERSION}"
+            dry_run="${INPUT_DRY_RUN:-true}"
+
+            if [[ "${dry_run}" == "true" ]]; then
+              mode="dry-run"
+            else
+              mode="manual-release"
+            fi
+          fi
+
+          version="${raw_version#v}"
+
+          {
+            echo "version=${version}"
+            echo "dry_run=${dry_run}"
+            echo "mode=${mode}"
+          } >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v6
 
+      - name: Set release version
+        id: bump
+        run: |
+          bash .github/scripts/set-devcontainer-version.sh "${{ steps.settings.outputs.version }}"
+          {
+            echo 'manifest_files<<EOF'
+            find features/src templates/src -type f \( -name 'devcontainer-feature.json' -o -name 'devcontainer-template.json' \) | sort
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: "Generate Template Docs"
+        uses: devcontainers/action@v1
+        with:
+          base-path-to-templates: "./templates/src"
+          generate-docs: "true"
+
+      - name: "Generate Feature Docs"
+        uses: devcontainers/action@v1
+        with:
+          base-path-to-features: "./features/src"
+          generate-docs: "true"
+
+      - name: Package release source bundle
+        if: ${{ github.event_name == 'release' }}
+        id: package
+        run: |
+          archive_path="$(bash .github/scripts/package-release-bundle.sh "${{ steps.settings.outputs.version }}")"
+          {
+            echo "archive_path=${archive_path}"
+            echo "archive_name=$(basename "${archive_path}")"
+          } >> "$GITHUB_OUTPUT"
+
       - name: "Publish Features"
+        if: ${{ steps.settings.outputs.dry_run != 'true' }}
         uses: devcontainers/action@v1
         with:
           publish-features: "true"
@@ -23,6 +102,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Publish Templates"
+        if: ${{ steps.settings.outputs.dry_run != 'true' }}
         uses: devcontainers/action@v1
         with:
           publish-templates: "true"
@@ -30,3 +110,33 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release source bundle
+        if: ${{ github.event_name == 'release' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" "${{ steps.package.outputs.archive_path }}" --clobber
+
+      - name: Summarize release run
+        run: |
+          {
+            echo "### Release workflow"
+            echo ""
+            echo "- Mode: ${{ steps.settings.outputs.mode }}"
+            echo "- Version: ${{ steps.settings.outputs.version }}"
+            echo "- Publish packages: ${{ steps.settings.outputs.dry_run != 'true' }}"
+            echo "- Attach source bundle to release: ${{ github.event_name == 'release' }}"
+            echo ""
+            echo "Updated manifest files:"
+            echo '```text'
+            printf '%s\n' "${{ steps.bump.outputs.manifest_files }}"
+            echo '```'
+            if [[ "${{ github.event_name }}" == "release" ]]; then
+              echo ""
+              echo "Release asset:"
+              echo '```text'
+              printf '%s\n' "${{ steps.package.outputs.archive_name }}"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

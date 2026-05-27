@@ -40,6 +40,46 @@
         "Local Smoke Test GZ: Assert"
       ],
       "problemMatcher": []
-    }
+    },
+    {
+      "label": "Prep Local Feature tests",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "bash .devcontainer/prepare-local-features.sh"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "x11 test xeyes",
+      "type": "shell",
+      "command": "xeyes",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "wayland test gtk3-demo",
+      "type": "shell",
+      "command": "gtk3-demo",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "gz test gz sim",
+      "type": "shell",
+      "command": "gz sim",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
   ]
 }

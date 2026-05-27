@@ -1,0 +1,18 @@
+{
+  "host_forwarding_env": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "wayland": {
+        "waylandDisplay": "${localEnv:WAYLAND_DISPLAY}"
+      }
+    }
+  },
+  "software_gl_disabled": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "wayland": {
+        "softwareGL": "0"
+      }
+    }
+  }
+}

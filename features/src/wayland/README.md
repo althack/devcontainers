@@ -15,6 +15,7 @@ Configure container environment and mounts for host Wayland display forwarding.
 
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
+| waylandDisplay | Set WAYLAND_DISPLAY for Wayland clients launched from the container. | string | wayland-0 |
 | softwareGL | Set LIBGL_ALWAYS_SOFTWARE for GPU compatibility. | string | 1 |
 
 

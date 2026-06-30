@@ -6,6 +6,11 @@
   "documentationURL": "https://github.com/athackst/devcontainer-templates/tree/main/features/src/wayland",
   "licenseURL": "https://github.com/athackst/devcontainer-templates/blob/main/LICENSE",
   "options": {
+    "waylandDisplay": {
+      "type": "string",
+      "default": "wayland-0",
+      "description": "Set WAYLAND_DISPLAY for Wayland clients launched from the container."
+    },
     "softwareGL": {
       "type": "string",
       "default": "1",
@@ -17,13 +22,11 @@
     }
   },
   "containerEnv": {
-    "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
-    "XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
-    "PULSE_SERVER": "${localEnv:PULSE_SERVER}",
-    "LIBGL_ALWAYS_SOFTWARE": "${feature:softwareGL}"
+    "XDG_RUNTIME_DIR": "/tmp/devcontainer-wayland-runtime",
+    "PULSE_SERVER": "unix:/tmp/devcontainer-wayland-runtime/pulse-native"
   },
   "mounts": [
-    "source=${localEnv:XDG_RUNTIME_DIR},target=${localEnv:XDG_RUNTIME_DIR},type=bind"
+    "source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/devcontainer-wayland-runtime,type=bind"
   ],
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"

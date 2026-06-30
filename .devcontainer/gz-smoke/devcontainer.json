@@ -1,0 +1,29 @@
+{
+  "name": "gz-smoke",
+  "image": "althack/gz:jetty-base",
+  "remoteUser": "ros",
+  "updateRemoteUserUID": true,
+  "containerEnv": {
+    "GZ_VERSION": "jetty"
+  },
+  "runArgs": [
+    "--network=host",
+    "--ipc=host",
+    "--cap-add=SYS_PTRACE",
+    "--security-opt=seccomp:unconfined",
+    "--security-opt=apparmor:unconfined"
+  ],
+  "features": {
+    "../local-features/x11": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "twxs.cmake",
+        "redhat.vscode-yaml"
+      ]
+    }
+  }
+}

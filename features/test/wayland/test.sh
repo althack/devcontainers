@@ -1,25 +1,15 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
-repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-feature_dir="${repo_root}/features/src/wayland"
-feature_metadata="${feature_dir}/devcontainer-feature.json"
-feature_install="${feature_dir}/install.sh"
-feature_readme="${feature_dir}/README.md"
+source dev-container-features-test-lib
 
-test -f "${feature_metadata}"
-test -f "${feature_install}"
-test -f "${feature_readme}"
+check "XDG_RUNTIME_DIR defaults to fixed path" bash -c '[ "${XDG_RUNTIME_DIR:-}" = "/tmp/devcontainer-wayland-runtime" ]'
+check "WAYLAND_DISPLAY defaults to wayland-0" bash -lc '[ "${WAYLAND_DISPLAY:-}" = "wayland-0" ]'
+check "PULSE_SERVER defaults to mounted runtime path" bash -c '[ "${PULSE_SERVER:-}" = "unix:/tmp/devcontainer-wayland-runtime/pulse-native" ]'
+check "software rendering defaults through shell init" bash -lc '[ "${LIBGL_ALWAYS_SOFTWARE:-}" = "1" ]'
+check "runtime directory mount exists" bash -c '[ -d "/tmp/devcontainer-wayland-runtime" ]'
+check "runtime directory is mounted" mountpoint -q /tmp/devcontainer-wayland-runtime
+check "default wayland socket exists" bash -c '[ -e "/tmp/devcontainer-wayland-runtime/wayland-0" ]'
+check "pulse socket exists" bash -c '[ -e "/tmp/devcontainer-wayland-runtime/pulse-native" ]'
 
-jq -e '.id == "wayland"' "${feature_metadata}" >/dev/null
-jq -e '.name == "Wayland GUI Forwarding"' "${feature_metadata}" >/dev/null
-jq -e '.options.softwareGL.default == "1"' "${feature_metadata}" >/dev/null
-jq -e '.containerEnv.WAYLAND_DISPLAY == "${localEnv:WAYLAND_DISPLAY}"' "${feature_metadata}" >/dev/null
-jq -e '.containerEnv.XDG_RUNTIME_DIR == "${localEnv:XDG_RUNTIME_DIR}"' "${feature_metadata}" >/dev/null
-jq -e '.containerEnv.PULSE_SERVER == "${localEnv:PULSE_SERVER}"' "${feature_metadata}" >/dev/null
-jq -e '.containerEnv.LIBGL_ALWAYS_SOFTWARE == "${feature:softwareGL}"' "${feature_metadata}" >/dev/null
-jq -e '.mounts | index("source=${localEnv:XDG_RUNTIME_DIR},target=${localEnv:XDG_RUNTIME_DIR},type=bind") != null' "${feature_metadata}" >/dev/null
-jq -e '.containerEnv.DISPLAY == null' "${feature_metadata}" >/dev/null
-jq -e '.containerEnv.XAUTHORITY == null' "${feature_metadata}" >/dev/null
-
-grep -q 'Wayland feature metadata configured.' "${feature_install}"
+reportResults

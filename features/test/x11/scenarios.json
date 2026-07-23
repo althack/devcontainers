@@ -1,0 +1,21 @@
+{
+  "host_forwarding_env": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "mounts": [
+      "source=${localEnv:XAUTHORITY},target=/tmp/devcontainer-xauthority-host,type=bind,readonly"
+    ],
+    "features": {
+      "x11": {
+        "display": "${localEnv:DISPLAY}"
+      }
+    }
+  },
+  "software_gl_disabled": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "x11": {
+        "softwareGL": "0"
+      }
+    }
+  }
+}

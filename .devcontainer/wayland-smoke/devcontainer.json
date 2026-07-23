@@ -1,0 +1,10 @@
+{
+  "name": "wayland-smoke",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "../local-features/wayland": {
+      "waylandDisplay": "${localEnv:WAYLAND_DISPLAY}"
+    }
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y gtk-3-examples"
+}

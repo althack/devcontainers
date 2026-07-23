@@ -6,6 +6,11 @@
   "documentationURL": "https://github.com/athackst/devcontainer-templates/tree/main/features/src/x11",
   "licenseURL": "https://github.com/athackst/devcontainer-templates/blob/main/LICENSE",
   "options": {
+    "display": {
+      "type": "string",
+      "default": ":0",
+      "description": "Set DISPLAY for X11 clients launched from the container."
+    },
     "softwareGL": {
       "type": "string",
       "default": "1",
@@ -17,13 +22,12 @@
     }
   },
   "containerEnv": {
-    "DISPLAY": "${localEnv:DISPLAY}",
-    "XAUTHORITY": "${localEnv:XAUTHORITY}",
-    "PULSE_SERVER": "${localEnv:PULSE_SERVER}",
-    "LIBGL_ALWAYS_SOFTWARE": "${feature:softwareGL}"
+    "XAUTHORITY": "/tmp/devcontainer-xauthority",
+    "PULSE_SERVER": "unix:/tmp/devcontainer-host-runtime/pulse-native"
   },
   "mounts": [
-    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
+    "source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/devcontainer-host-runtime,type=bind"
   ],
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"

@@ -4,6 +4,11 @@ on:
 
 jobs:
   smoke-test:
+    strategy:
+      matrix:
+        template:
+          - gz
+          - ros2
     runs-on: ubuntu-latest
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
@@ -12,11 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Smoke test for "gz"
+      - name: Smoke test for "${{ matrix.template }}"
         id: smoke_test
         uses: ./.github/actions/smoke-test
         with:
-          template: "gz"
+          template: "${{ matrix.template }}"
 
   feature-tests:
     runs-on: ubuntu-latest

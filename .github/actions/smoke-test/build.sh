@@ -43,7 +43,9 @@ if [ -d "${TEST_DIR}" ] ; then
     DEST_DIR="${SRC_DIR}/test-project"
     mkdir -p ${DEST_DIR}
     cp -Rp ${TEST_DIR}/* ${DEST_DIR}
-    cp -Rp test/test-utils/* ${DEST_DIR}
+    if [ -d "test/test-utils" ]; then
+        cp -Rp test/test-utils/* ${DEST_DIR}
+    fi
 fi
 
 export DOCKER_BUILDKIT=1

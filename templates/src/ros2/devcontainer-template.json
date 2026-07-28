@@ -1,0 +1,48 @@
+{
+  "id": "ros2",
+  "version": "0.1.0",
+  "name": "ROS 2",
+  "description": "ROS 2 development environment backed by the althack/ros2 image collection.",
+  "documentationURL": "https://github.com/althack/devcontainers/tree/main/templates/src/ros2",
+  "licenseURL": "https://github.com/althack/devcontainers/blob/main/LICENSE",
+  "publisher": "althack",
+  "keywords": [
+    "ros",
+    "ros2",
+    "robotics",
+    "ubuntu",
+    "docker"
+  ],
+  "platforms": [
+    "ROS 2",
+    "Ubuntu",
+    "C++",
+    "Python"
+  ],
+  "options": {
+    "distro": {
+      "type": "string",
+      "description": "ROS 2 distribution to use.",
+      "proposals": [
+        "rolling",
+        "lyrical",
+        "kilted",
+        "jazzy",
+        "humble"
+      ],
+      "default": "jazzy"
+    },
+    "imageVariant": {
+      "type": "string",
+      "description": "Container image variant to use for this ROS 2 distribution.",
+      "proposals": [
+        "base",
+        "dev",
+        "desktop",
+        "full",
+        "gazebo"
+      ],
+      "default": "dev"
+    }
+  }
+}

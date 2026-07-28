@@ -2,9 +2,14 @@
 
 Devcontainer templates repository focused on robotics and simulation.
 
-## Included template
+## Included templates
 
 - `templates/src/gz`
+- `templates/src/ros2`
+
+The templates are development entry points for the actively maintained
+`althack/gz` and `althack/ros2` image collections. ROS 2 is headless by default
+so projects can choose their own host GUI integration when needed.
 
 ## Included feature
 

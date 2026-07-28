@@ -97,6 +97,7 @@ jobs:
         with:
           publish-features: "true"
           base-path-to-features: "./features/src"
+          disable-repo-tagging: "true"
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -107,6 +108,7 @@ jobs:
         with:
           publish-templates: "true"
           base-path-to-templates: "./templates/src"
+          disable-repo-tagging: "true"
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

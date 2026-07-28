@@ -6,10 +6,22 @@ Devcontainer templates repository focused on robotics and simulation.
 
 - `templates/src/gz`
 
-## Included features
+## Included feature
 
-- `features/src/x11`
-- `features/src/wayland`
+- `features/src/linux-x11-forwarding` (local Linux hosts only)
+
+## Sample configs
+
+- `.devcontainer/gz-smoke/devcontainer.json`
+- `.devcontainer/linux-x11-forwarding-smoke/devcontainer.json`
+
+Before using the samples locally, run
+`bash .devcontainer/prepare-local-features.sh` so `devcontainer up` can resolve
+the unpublished Feature.
+
+On classic Xorg hosts where the authority cookie lives outside
+`XDG_RUNTIME_DIR`, add a bind mount to `/tmp/devcontainer-xauthority-host`.
+XWayland setups are auto-detected from the mounted runtime directory.
 
 ## Workflows
 

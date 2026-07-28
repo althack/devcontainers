@@ -1,0 +1,35 @@
+{
+  "id": "linux-x11-forwarding",
+  "version": "0.1.0",
+  "name": "Linux X11 Forwarding",
+  "description": "Forward a local Linux host's X11 display into a development container.",
+  "documentationURL": "https://github.com/althack/devcontainers/tree/main/features/src/linux-x11-forwarding",
+  "licenseURL": "https://github.com/althack/devcontainers/blob/main/LICENSE",
+  "options": {
+    "x11Display": {
+      "type": "string",
+      "default": ":0",
+      "description": "Set DISPLAY for X11 clients launched from the container."
+    },
+    "softwareGL": {
+      "type": "string",
+      "default": "1",
+      "proposals": [
+        "0",
+        "1"
+      ],
+      "description": "Set LIBGL_ALWAYS_SOFTWARE for GPU compatibility."
+    }
+  },
+  "containerEnv": {
+    "XAUTHORITY": "/tmp/devcontainer-xauthority",
+    "PULSE_SERVER": "unix:/tmp/devcontainer-host-runtime/pulse-native"
+  },
+  "mounts": [
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
+    "source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/devcontainer-host-runtime,type=bind"
+  ],
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

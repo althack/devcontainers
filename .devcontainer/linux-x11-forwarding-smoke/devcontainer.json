@@ -1,0 +1,10 @@
+{
+  "name": "linux-x11-forwarding-smoke",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "../local-features/linux-x11-forwarding": {
+      "x11Display": "${localEnv:DISPLAY}"
+    }
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y x11-apps"
+}

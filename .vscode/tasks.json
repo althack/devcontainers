@@ -40,6 +40,55 @@
         "Local Smoke Test GZ: Assert"
       ],
       "problemMatcher": []
+    },
+    {
+      "label": "Generate Feature Docs",
+      "type": "process",
+      "command": "devcontainer",
+      "args": [
+        "features",
+        "generate-docs",
+        "--project-folder",
+        "./features/src",
+        "--namespace",
+        "althack/devcontainers",
+        "--github-owner",
+        "althack",
+        "--github-repo",
+        "devcontainers"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Template Docs",
+      "type": "process",
+      "command": "devcontainer",
+      "args": [
+        "templates",
+        "generate-docs",
+        "--project-folder",
+        "./templates/src",
+        "--github-owner",
+        "althack",
+        "--github-repo",
+        "devcontainers"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Docs",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Generate Feature Docs",
+        "Generate Template Docs"
+      ],
+      "problemMatcher": []
     }
   ]
 }

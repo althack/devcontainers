@@ -1,6 +1,6 @@
 {
   "id": "gz",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "name": "Gazebo",
   "description": "Gazebo development environment.",
   "documentationURL": "https://github.com/athackst/devcontainer-templates/tree/main/templates/src/gz",

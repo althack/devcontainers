@@ -1,6 +1,6 @@
 {
   "id": "linux-x11-forwarding",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "name": "Linux X11 Forwarding",
   "description": "Forward a local Linux host's X11 display into a development container.",
   "documentationURL": "https://github.com/althack/devcontainers/tree/main/features/src/linux-x11-forwarding",

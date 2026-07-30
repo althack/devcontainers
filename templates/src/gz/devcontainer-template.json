@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "name": "Gazebo",
   "description": "Gazebo development environment.",
-  "documentationURL": "https://github.com/athackst/devcontainer-templates/tree/main/templates/src/gz",
-  "licenseURL": "https://github.com/athackst/devcontainer-templates/blob/main/LICENSE",
+  "documentationURL": "https://github.com/althack/devcontainers/tree/main/templates/src/gz",
+  "licenseURL": "https://github.com/althack/devcontainers/blob/main/LICENSE",
   "publisher": "althack",
   "keywords": [
     "gazebo",

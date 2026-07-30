@@ -35,6 +35,7 @@ fi
 for manifest_file in "${manifest_files[@]}"; do
     tmp_file="$(mktemp)"
     jq --arg version "${version}" '.version = $version' "${manifest_file}" > "${tmp_file}"
+    chmod --reference="${manifest_file}" "${tmp_file}"
     mv "${tmp_file}" "${manifest_file}"
     echo "Updated ${manifest_file} to version ${version}"
 done

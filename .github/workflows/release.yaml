@@ -81,6 +81,24 @@ jobs:
           base-path-to-features: "./features/src"
           generate-docs: "true"
 
+      - name: Verify release versions
+        env:
+          EXPECTED_VERSION: ${{ steps.settings.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r manifest_file; do
+            manifest_version="$(jq -r '.version' "${manifest_file}")"
+            if [[ "${manifest_version}" != "${EXPECTED_VERSION}" ]]; then
+              echo "${manifest_file} has version ${manifest_version}; expected ${EXPECTED_VERSION}." >&2
+              exit 1
+            fi
+          done < <(
+            find features/src templates/src -type f \
+              \( -name 'devcontainer-feature.json' -o -name 'devcontainer-template.json' \) \
+              | sort
+          )
+
       - name: Package release source bundle
         if: ${{ github.event_name == 'release' }}
         id: package

@@ -24,16 +24,16 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install devcontainer CLI
-        run: npm install -g @devcontainers/cli
+        run: npm install --global @devcontainers/cli@0.88.0
 
       - name: Validate feature metadata
         run: bash features/test/test_all.sh
 
       - name: Validate Feature publishing metadata
-        uses: devcontainers/action@v1
-        with:
-          validate-only: "true"
-          base-path-to-features: "./features/src"
+        run: |
+          devcontainer features package features/src \
+            --output-folder "${RUNNER_TEMP}/features" \
+            --force-clean-output-folder
 
   gen-docs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
@@ -48,17 +48,23 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.CI_BOT_TOKEN }}
 
-      - name: "Generate Template Docs"
-        uses: devcontainers/action@v1
-        with:
-          base-path-to-templates: "./templates/src"
-          generate-docs: "true"
+      - name: Install devcontainer CLI
+        run: npm install --global @devcontainers/cli@0.88.0
 
-      - name: "Generate Feature Docs"
-        uses: devcontainers/action@v1
-        with:
-          base-path-to-features: "./features/src"
-          generate-docs: "true"
+      - name: Generate Template Docs
+        run: |
+          devcontainer templates generate-docs \
+            --project-folder templates/src \
+            --github-owner "${GITHUB_REPOSITORY_OWNER}" \
+            --github-repo "${GITHUB_REPOSITORY#*/}"
+
+      - name: Generate Feature Docs
+        run: |
+          devcontainer features generate-docs \
+            --project-folder features/src \
+            --namespace "${GITHUB_REPOSITORY}" \
+            --github-owner "${GITHUB_REPOSITORY_OWNER}" \
+            --github-repo "${GITHUB_REPOSITORY#*/}"
 
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:

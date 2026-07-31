@@ -48,7 +48,7 @@ fi
 
 export DOCKER_BUILDKIT=1
 echo "(*) Installing @devcontainer/cli"
-npm install -g @devcontainers/cli
+npm install --global @devcontainers/cli@0.88.0
 
 echo "Building Dev Container"
 ID_LABEL="test-container=${TEMPLATE_ID}"

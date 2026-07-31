@@ -59,6 +59,9 @@ jobs:
 
       - uses: actions/checkout@v6
 
+      - name: Install devcontainer CLI
+        run: npm install --global @devcontainers/cli@0.88.0
+
       - name: Set release version
         id: bump
         run: |
@@ -69,17 +72,20 @@ jobs:
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
-      - name: "Generate Template Docs"
-        uses: devcontainers/action@v1
-        with:
-          base-path-to-templates: "./templates/src"
-          generate-docs: "true"
+      - name: Generate Template Docs
+        run: |
+          devcontainer templates generate-docs \
+            --project-folder templates/src \
+            --github-owner "${GITHUB_REPOSITORY_OWNER}" \
+            --github-repo "${GITHUB_REPOSITORY#*/}"
 
-      - name: "Generate Feature Docs"
-        uses: devcontainers/action@v1
-        with:
-          base-path-to-features: "./features/src"
-          generate-docs: "true"
+      - name: Generate Feature Docs
+        run: |
+          devcontainer features generate-docs \
+            --project-folder features/src \
+            --namespace "${GITHUB_REPOSITORY}" \
+            --github-owner "${GITHUB_REPOSITORY_OWNER}" \
+            --github-repo "${GITHUB_REPOSITORY#*/}"
 
       - name: Verify release versions
         env:
@@ -109,27 +115,38 @@ jobs:
             echo "archive_name=$(basename "${archive_path}")"
           } >> "$GITHUB_OUTPUT"
 
-      - name: "Publish Features"
-        uses: devcontainers/action@v1
-        with:
-          publish-features: ${{ steps.settings.outputs.dry_run != 'true' }}
-          validate-only: ${{ steps.settings.outputs.dry_run == 'true' }}
-          base-path-to-features: "./features/src"
-          disable-repo-tagging: "true"
+      - name: Validate Feature publishing metadata
+        if: ${{ steps.settings.outputs.dry_run == 'true' }}
+        run: |
+          devcontainer features package features/src \
+            --output-folder "${RUNNER_TEMP}/features" \
+            --force-clean-output-folder
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "Publish Templates"
+      - name: Install ORAS
         if: ${{ steps.settings.outputs.dry_run != 'true' }}
-        uses: devcontainers/action@v1
-        with:
-          publish-templates: "true"
-          base-path-to-templates: "./templates/src"
-          disable-repo-tagging: "true"
+        env:
+          ORAS_VERSION: "1.3.3"
+          ORAS_SHA256: "9ce999f8d2de03fc03968b29d743077a58783e545e5eaa53917ca177352d0e59"
+        run: |
+          archive="${RUNNER_TEMP}/oras.tar.gz"
+          curl --fail --silent --show-error --location \
+            "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_amd64.tar.gz" \
+            --output "${archive}"
+          echo "${ORAS_SHA256}  ${archive}" | sha256sum --check
+          tar --extract --gzip --file "${archive}" --directory "${RUNNER_TEMP}" oras
+          echo "${RUNNER_TEMP}" >> "${GITHUB_PATH}"
 
+      - name: Log in to GHCR
+        if: ${{ steps.settings.outputs.dry_run != 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "${GH_TOKEN}" | oras login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin
+
+      - name: Publish Dev Container assets
+        if: ${{ steps.settings.outputs.dry_run != 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/publish-devcontainer-assets.sh ghcr.io "${GITHUB_REPOSITORY}"
 
       - name: Upload release source bundle
         if: ${{ github.event_name == 'release' }}

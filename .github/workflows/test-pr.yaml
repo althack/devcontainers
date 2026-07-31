@@ -29,6 +29,12 @@ jobs:
       - name: Validate feature metadata
         run: bash features/test/test_all.sh
 
+      - name: Validate Feature publishing metadata
+        uses: devcontainers/action@v1
+        with:
+          validate-only: "true"
+          base-path-to-features: "./features/src"
+
   gen-docs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest

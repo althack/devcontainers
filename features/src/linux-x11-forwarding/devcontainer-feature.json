@@ -26,8 +26,16 @@
     "PULSE_SERVER": "unix:/tmp/devcontainer-host-runtime/pulse-native"
   },
   "mounts": [
-    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
-    "source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/devcontainer-host-runtime,type=bind"
+    {
+      "source": "/tmp/.X11-unix",
+      "target": "/tmp/.X11-unix",
+      "type": "bind"
+    },
+    {
+      "source": "${localEnv:XDG_RUNTIME_DIR}",
+      "target": "/tmp/devcontainer-host-runtime",
+      "type": "bind"
+    }
   ],
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"

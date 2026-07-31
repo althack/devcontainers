@@ -110,10 +110,10 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: "Publish Features"
-        if: ${{ steps.settings.outputs.dry_run != 'true' }}
         uses: devcontainers/action@v1
         with:
-          publish-features: "true"
+          publish-features: ${{ steps.settings.outputs.dry_run != 'true' }}
+          validate-only: ${{ steps.settings.outputs.dry_run == 'true' }}
           base-path-to-features: "./features/src"
           disable-repo-tagging: "true"
 
@@ -121,10 +121,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Publish Templates"
-        if: ${{ steps.settings.outputs.dry_run != 'true' }}
         uses: devcontainers/action@v1
         with:
-          publish-templates: "true"
+          publish-templates: ${{ steps.settings.outputs.dry_run != 'true' }}
+          validate-only: ${{ steps.settings.outputs.dry_run == 'true' }}
           base-path-to-templates: "./templates/src"
           disable-repo-tagging: "true"
 

@@ -1,3 +1,4 @@
+
 # ROS 2 (ros2)
 
 ROS 2 development environment backed by the althack/ros2 image collection.
@@ -26,6 +27,7 @@ The template uses host networking and host IPC to support common local ROS
 discovery and shared-memory workflows. Review those settings before using the
 template with untrusted software.
 
+
 ---
 
-_Note: This file was auto-generated from the [devcontainer-template.json](https://github.com/althack/devcontainers/blob/main/templates/src/ros2/devcontainer-template.json). Add additional notes to a `NOTES.md`._
+_Note: This file was auto-generated from the [devcontainer-template.json](https://github.com/althack/devcontainers/blob/main/templates/src/ros2/devcontainer-template.json).  Add additional notes to a `NOTES.md`._

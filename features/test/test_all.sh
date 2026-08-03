@@ -2,12 +2,14 @@
 set -euo pipefail
 
 features_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-base_image="${DEVCONTAINER_BASE_IMAGE:-mcr.microsoft.com/devcontainers/base:ubuntu}"
+base_image="${DEVCONTAINER_BASE_IMAGE:-mcr.microsoft.com/devcontainers/base:ubuntu-24.04}"
 
 if ! command -v devcontainer >/dev/null 2>&1; then
     echo "devcontainer CLI is required. Install it with 'npm install -g @devcontainers/cli'." >&2
     exit 1
 fi
+
+python3 "${features_root}/test/validate_ros2_config.py"
 
 cleanup_paths=()
 
@@ -40,7 +42,7 @@ touch "${XAUTHORITY}"
 touch "${xwayland_xauthority}"
 touch "${XDG_RUNTIME_DIR}/pulse-native"
 
-for feature in linux-x11-forwarding; do
+for feature in linux-x11-forwarding ros2; do
     devcontainer features test \
         --base-image "${base_image}" \
         --features "${feature}" \

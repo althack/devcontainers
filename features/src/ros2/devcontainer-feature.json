@@ -1,0 +1,39 @@
+{
+  "id": "ros2",
+  "version": "0.0.0",
+  "name": "ROS 2",
+  "description": "Install ROS 2 and the tools needed to develop ROS packages.",
+  "documentationURL": "https://github.com/althack/devcontainers/tree/main/features/src/ros2",
+  "licenseURL": "https://github.com/althack/devcontainers/blob/main/LICENSE",
+  "options": {
+    "distro": {
+      "type": "string",
+      "proposals": [
+        "auto",
+        "humble",
+        "jazzy",
+        "kilted",
+        "lyrical"
+      ],
+      "default": "auto",
+      "description": "ROS 2 distribution to install. By default, select the recommended distribution for the container's Ubuntu release."
+    },
+    "package": {
+      "type": "string",
+      "proposals": [
+        "ros-base",
+        "desktop"
+      ],
+      "default": "desktop",
+      "description": "ROS 2 metapackage to install."
+    },
+    "workspace": {
+      "type": "string",
+      "default": "${containerWorkspaceFolder}",
+      "description": "Workspace whose install/setup.sh file should be sourced when present."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

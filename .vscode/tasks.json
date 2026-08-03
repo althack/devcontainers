@@ -42,6 +42,71 @@
       "problemMatcher": []
     },
     {
+      "label": "Prepare Local Features",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        ".devcontainer/prepare-local-features.sh"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Local Smoke Test ROS 2 Feature",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Prepare Local Features"
+      ],
+      "type": "process",
+      "command": "devcontainer",
+      "args": [
+        "up",
+        "--workspace-folder",
+        "${workspaceFolder}",
+        "--config",
+        "${workspaceFolder}/.devcontainer/ros2-feature-smoke/devcontainer.json"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Test ROS 2 Feature",
+      "type": "process",
+      "command": "devcontainer",
+      "args": [
+        "features",
+        "test",
+        "--features",
+        "ros2",
+        "--project-folder",
+        "./features"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Test All Features",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "features/test/test_all.sh"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Generate Feature Docs",
       "type": "process",
       "command": "devcontainer",

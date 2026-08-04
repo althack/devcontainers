@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 
-feature_root = Path(__file__).resolve().parents[1] / "src" / "ros2"
+feature_root = Path(__file__).resolve().parents[2] / "src" / "ros2"
 
 with (feature_root / "distributions.json").open(encoding="utf-8") as stream:
     config = json.load(stream)
@@ -46,6 +46,6 @@ if proposals != ["auto", *distributions]:
     )
 
 if default != "auto":
-    raise SystemExit("The ROS 2 distro option must default to auto")
+    raise SystemExit("The default ROS 2 distro option must be auto")
 
 print(f"Validated {len(distributions)} ROS 2 distribution definitions")

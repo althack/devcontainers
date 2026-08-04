@@ -2,20 +2,25 @@
   "humble": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
     "features": {
-      "ros2": {}
+      "ros2": {
+        "package": "ros-base"
+      }
     }
   },
   "lyrical": {
     "image": "ubuntu:26.04",
     "features": {
-      "ros2": {}
+      "ros2": {
+        "package": "ros-base"
+      }
     }
   },
   "kilted": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
     "features": {
       "ros2": {
-        "distro": "kilted"
+        "distro": "kilted",
+        "package": "ros-base"
       }
     }
   }

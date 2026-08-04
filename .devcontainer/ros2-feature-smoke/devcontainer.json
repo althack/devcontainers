@@ -1,0 +1,8 @@
+{
+  "name": "ros2-feature-smoke",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "../local-features/ros2": {}
+  },
+  "postCreateCommand": "bash -lc 'ros2 pkg prefix rviz2 >/dev/null && command -v colcon >/dev/null && command -v rosdep >/dev/null && command -v vcs >/dev/null'"
+}

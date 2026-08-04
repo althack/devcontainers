@@ -1,0 +1,26 @@
+{
+  "ubuntuReleases": {
+    "jammy": {
+      "version": "22.04",
+      "defaultDistro": "humble",
+      "supportedDistros": [
+        "humble"
+      ]
+    },
+    "noble": {
+      "version": "24.04",
+      "defaultDistro": "jazzy",
+      "supportedDistros": [
+        "jazzy",
+        "kilted"
+      ]
+    },
+    "resolute": {
+      "version": "26.04",
+      "defaultDistro": "lyrical",
+      "supportedDistros": [
+        "lyrical"
+      ]
+    }
+  }
+}

@@ -49,6 +49,14 @@ sourced afterward. The Feature does not create or replace the container user.
 ROS 2 packages installed from debs use Ubuntu's system Python. Conda or a
 separately installed Python interpreter may be incompatible with those packages.
 
+Compatible ROS installations from `ros:*`, `osrf/ros:*`, and other ROS base
+images are reused. An explicit `distro` must agree with any existing
+installation; the Feature fails rather than creating a mixed ROS environment.
+
+The Feature provides compiler, debugger, build, version-control, SSH, Python,
+rosdep, colcon, vcstool, ament lint, and shell-completion tooling. Graphics,
+Gazebo, NVIDIA, CUDA, and host-display integration remain separate concerns.
+
 The Feature's ROS 2-to-Ubuntu compatibility data is stored in
 `distributions.json` and packaged with the Feature.
 

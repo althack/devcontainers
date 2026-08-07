@@ -40,10 +40,13 @@ for codename, settings in ubuntu_releases.items():
             raise SystemExit(f"ROS 2 {name} is listed for more than one Ubuntu release")
         distributions.append(name)
 
-if proposals != ["auto", *distributions]:
+if not proposals or proposals[0] != "auto" or set(proposals[1:]) != set(distributions):
     raise SystemExit(
-        "ROS 2 distro proposals must be auto followed by distributions.json entries"
+        "ROS 2 distro proposals must start with auto and contain every configured distribution"
     )
+
+if len(proposals) != len(distributions) + 1:
+    raise SystemExit("ROS 2 distro proposals must not contain duplicates")
 
 if default != "auto":
     raise SystemExit("The default ROS 2 distro option must be auto")

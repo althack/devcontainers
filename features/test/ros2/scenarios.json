@@ -1,27 +1,26 @@
 {
   "humble": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
-    "features": {
-      "ros2": {
-        "package": "ros-base"
-      }
-    }
-  },
-  "lyrical": {
-    "image": "ubuntu:26.04",
-    "features": {
-      "ros2": {
-        "package": "ros-base"
-      }
-    }
+    "features": { "ros2": { "package": "ros-base" } }
   },
   "kilted": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
-    "features": {
-      "ros2": {
-        "distro": "kilted",
-        "package": "ros-base"
-      }
-    }
+    "features": { "ros2": { "distro": "kilted", "package": "ros-base" } }
+  },
+  "lyrical": {
+    "image": "ubuntu:26.04",
+    "features": { "ros2": { "package": "ros-base" } }
+  },
+  "upstream_ros": {
+    "image": "ros:jazzy-ros-base",
+    "features": { "ros2": { "package": "ros-base" } }
+  },
+  "osrf_ros": {
+    "image": "osrf/ros:jazzy-desktop",
+    "features": { "ros2": {} }
+  },
+  "workspace_overlay": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+    "features": { "ros2": { "package": "ros-base", "workspace": "/tmp/ros2_overlay" } }
   }
 }

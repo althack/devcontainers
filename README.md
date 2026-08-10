@@ -9,6 +9,7 @@ Devcontainer templates repository focused on robotics and simulation.
 ## Included feature
 
 - `features/src/linux-x11-forwarding` (local Linux hosts only)
+- `features/src/ros2`
 
 ## Sample configs
 

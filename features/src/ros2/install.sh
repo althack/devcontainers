@@ -169,6 +169,9 @@ if [[ -n "${remote_user}" && -n "${remote_user_home}" && -d "${remote_user_home}
     if ! grep -Fq '[ -f /etc/profile.d/ros2.sh ] && . /etc/profile.d/ros2.sh' "${shell_init}"; then
         printf '\n%s\n' '[ -f /etc/profile.d/ros2.sh ] && . /etc/profile.d/ros2.sh' >> "${shell_init}"
     fi
+    if ! grep -Fq '[ -f /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash ] && . /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash' "${shell_init}"; then
+        printf '%s\n' '[ -f /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash ] && . /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash' >> "${shell_init}"
+    fi
     chown "${remote_user}:$(id -gn "${remote_user}")" "${shell_init}"
 else
     echo "No effective Dev Container user was provided; skipping user-specific shell configuration."

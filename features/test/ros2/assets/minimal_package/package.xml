@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>devcontainers_minimal</name>
+  <version>0.0.0</version>
+  <description>Minimal package used to validate the ROS 2 development environment.</description>
+  <maintainer email="maintainer@example.com">Devcontainers test</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

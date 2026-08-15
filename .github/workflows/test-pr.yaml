@@ -42,9 +42,7 @@ jobs:
   pulseaudio-feature-tests:
     runs-on: ubuntu-latest
     env:
-      DISPLAY: ":99"
       XDG_RUNTIME_DIR: /tmp/devcontainers-pulseaudio-runtime
-      XAUTHORITY: /tmp/devcontainers-pulseaudio-xauthority.test
     steps:
       - uses: actions/checkout@v6
 
@@ -59,15 +57,6 @@ jobs:
           devcontainer features test \
             --features linux-pulseaudio-forwarding \
             --project-folder features
-
-      - name: Clean up PulseAudio test socket
-        if: always()
-        run: |
-          pid_file=/tmp/devcontainers-pulseaudio-fixture.pid
-          if [[ -s "${pid_file}" ]]; then
-            kill "$(cat "${pid_file}")" 2>/dev/null || true
-            rm -f "${pid_file}"
-          fi
 
   ros2-default-test:
     runs-on: ubuntu-latest

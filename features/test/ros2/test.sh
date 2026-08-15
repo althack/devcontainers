@@ -13,5 +13,6 @@ check "ament cppcheck compatibility is enabled" bash -lc '[ "${AMENT_CPPCHECK_AL
 check "rosdep is initialized" test -f /etc/ros/rosdep/sources.list.d/20-default.list
 check "absent overlay does not break shell startup" bash -lc 'command -v ros2 >/dev/null'
 check "effective user bashrc sources ROS profile once" bash -lc 'test "$(grep -Fc "[ -f /etc/profile.d/ros2.sh ] && . /etc/profile.d/ros2.sh" /home/vscode/.bashrc)" -eq 1'
+check "colcon completion is enabled" bash -ic 'complete -p colcon >/dev/null'
 
 reportResults

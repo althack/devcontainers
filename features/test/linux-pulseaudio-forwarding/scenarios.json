@@ -1,0 +1,8 @@
+{
+  "host_forwarding": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "linux-pulseaudio-forwarding": {}
+    }
+  }
+}

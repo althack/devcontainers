@@ -1,0 +1,17 @@
+{
+  "id": "linux-pulseaudio-forwarding",
+  "version": "0.0.0",
+  "name": "Linux PulseAudio Forwarding",
+  "description": "Forward a local Linux host PulseAudio or PipeWire-Pulse socket into a development container.",
+  "documentationURL": "https://github.com/althack/devcontainers/tree/main/features/src/linux-pulseaudio-forwarding",
+  "licenseURL": "https://github.com/althack/devcontainers/blob/main/LICENSE",
+  "mounts": [
+    "type=bind,source=${localEnv:XDG_RUNTIME_DIR}/pulse/native,target=/tmp/devcontainer-pulse/native,readonly"
+  ],
+  "containerEnv": {
+    "PULSE_SERVER": "unix:/tmp/devcontainer-pulse/native"
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

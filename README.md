@@ -9,12 +9,14 @@ Devcontainer templates repository focused on robotics and simulation.
 ## Included feature
 
 - `features/src/linux-x11-forwarding` (local Linux hosts only)
+- `features/src/linux-pulseaudio-forwarding` (local Linux hosts only)
 - `features/src/ros2`
 
 ## Sample configs
 
 - `.devcontainer/gz-smoke/devcontainer.json`
 - `.devcontainer/linux-x11-forwarding-smoke/devcontainer.json`
+- `.devcontainer/linux-pulseaudio-forwarding-smoke/devcontainer.json`
 - `.devcontainer/ros2-feature-smoke/devcontainer.json`
 
 Before using the samples locally, run
@@ -24,6 +26,17 @@ the unpublished Features.
 On classic Xorg hosts where the authority cookie lives outside
 `XDG_RUNTIME_DIR`, add a bind mount to `/tmp/devcontainer-xauthority-host`.
 XWayland setups are auto-detected from the mounted runtime directory.
+
+To try the host audio forwarding Feature locally, make sure
+`$XDG_RUNTIME_DIR/pulse/native` exists, then run:
+
+```bash
+bash .devcontainer/prepare-local-features.sh
+devcontainer up --workspace-folder .devcontainer/linux-pulseaudio-forwarding-smoke
+```
+
+The smoke container prints the configured `PULSE_SERVER` and verifies that
+the host PulseAudio socket is available at `/tmp/devcontainer-pulse/native`.
 
 ## Workflows
 

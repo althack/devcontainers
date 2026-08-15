@@ -1,0 +1,8 @@
+{
+  "name": "linux-pulseaudio-forwarding-smoke",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "../local-features/linux-pulseaudio-forwarding": {}
+  },
+  "postCreateCommand": "bash -lc 'set -eu; test -n \"${PULSE_SERVER:-}\" && test \"${PULSE_SERVER}\" = unix:/tmp/devcontainer-pulse/native || { echo \"PULSE_SERVER is not configured\" >&2; exit 1; }; test -e /tmp/devcontainer-pulse/native || { echo \"Host PulseAudio socket is unavailable; check XDG_RUNTIME_DIR/pulse/native\" >&2; exit 1; }; echo \"PulseAudio: ${PULSE_SERVER}\"; echo \"PulseAudio forwarding is available.\"'"
+}

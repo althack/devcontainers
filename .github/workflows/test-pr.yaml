@@ -24,7 +24,6 @@ jobs:
       DISPLAY: ":99"
       XDG_RUNTIME_DIR: /tmp/devcontainers-x11-runtime
       XAUTHORITY: /tmp/devcontainers-xauthority.test
-      PULSE_SERVER: unix:/tmp/devcontainers-x11-runtime/pulse-native
     steps:
       - uses: actions/checkout@v6
 
@@ -38,6 +37,25 @@ jobs:
         run: |
           devcontainer features test \
             --features linux-x11-forwarding \
+            --project-folder features
+
+  pulseaudio-feature-tests:
+    runs-on: ubuntu-latest
+    env:
+      XDG_RUNTIME_DIR: /tmp/devcontainers-pulseaudio-runtime
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install devcontainer CLI
+        run: npm install --global @devcontainers/cli@0.88.0
+
+      - name: Prepare PulseAudio test environment
+        run: bash features/test/linux-pulseaudio-forwarding/prepare-host.sh
+
+      - name: Test PulseAudio Feature
+        run: |
+          devcontainer features test \
+            --features linux-pulseaudio-forwarding \
             --project-folder features
 
   ros2-default-test:
@@ -149,6 +167,7 @@ jobs:
       - docs-check
       - feature-package
       - x11-feature-tests
+      - pulseaudio-feature-tests
       - ros2-default-test
       - ros2-conflict-test
       - ros2-idempotency-test
@@ -161,6 +180,7 @@ jobs:
         env:
           SMOKE_TEST_RESULT: ${{ needs.smoke-test.result }}
           X11_FEATURE_TESTS_RESULT: ${{ needs.x11-feature-tests.result }}
+          PULSEAUDIO_FEATURE_TESTS_RESULT: ${{ needs.pulseaudio-feature-tests.result }}
           ROS2_DEFAULT_TEST_RESULT: ${{ needs.ros2-default-test.result }}
           ROS2_CONFLICT_TEST_RESULT: ${{ needs.ros2-conflict-test.result }}
           ROS2_IDEMPOTENCY_TEST_RESULT: ${{ needs.ros2-idempotency-test.result }}
@@ -182,6 +202,7 @@ jobs:
 
           check_result "smoke-test" "${SMOKE_TEST_RESULT}"
           check_result "x11-feature-tests" "${X11_FEATURE_TESTS_RESULT}"
+          check_result "pulseaudio-feature-tests" "${PULSEAUDIO_FEATURE_TESTS_RESULT}"
           check_result "ros2-default-test" "${ROS2_DEFAULT_TEST_RESULT}"
           check_result "ros2-conflict-test" "${ROS2_CONFLICT_TEST_RESULT}"
           check_result "ros2-idempotency-test" "${ROS2_IDEMPOTENCY_TEST_RESULT}"

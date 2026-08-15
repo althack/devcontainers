@@ -22,20 +22,11 @@
     }
   },
   "containerEnv": {
-    "XAUTHORITY": "/tmp/devcontainer-xauthority",
-    "PULSE_SERVER": "unix:/tmp/devcontainer-host-runtime/pulse-native"
+    "XAUTHORITY": "/tmp/devcontainer-xauthority"
   },
   "mounts": [
-    {
-      "source": "/tmp/.X11-unix",
-      "target": "/tmp/.X11-unix",
-      "type": "bind"
-    },
-    {
-      "source": "${localEnv:XDG_RUNTIME_DIR}",
-      "target": "/tmp/devcontainer-host-runtime",
-      "type": "bind"
-    }
+    "type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix,readonly",
+    "type=bind,source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/devcontainer-host-runtime,readonly"
   ],
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"

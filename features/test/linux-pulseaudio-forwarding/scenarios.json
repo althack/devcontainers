@@ -4,5 +4,14 @@
     "features": {
       "linux-pulseaudio-forwarding": {}
     }
+  },
+  "composed_with_x11": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "linux-pulseaudio-forwarding": {},
+      "linux-x11-forwarding": {
+        "x11Display": ":99"
+      }
+    }
   }
 }

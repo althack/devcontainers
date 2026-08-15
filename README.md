@@ -18,6 +18,7 @@ Devcontainer templates repository focused on robotics and simulation.
 - `.devcontainer/linux-x11-forwarding-smoke/devcontainer.json`
 - `.devcontainer/linux-pulseaudio-forwarding-smoke/devcontainer.json`
 - `.devcontainer/ros2-feature-smoke/devcontainer.json`
+- `.devcontainer/ros2-x11-pulseaudio-smoke/devcontainer.json`
 
 Before using the samples locally, run
 `bash .devcontainer/prepare-local-features.sh` so `devcontainer up` can resolve

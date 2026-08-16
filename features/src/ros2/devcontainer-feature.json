@@ -27,6 +27,11 @@
       "default": "desktop",
       "description": "ROS 2 metapackage to install."
     },
+    "additionalPackages": {
+      "type": "string",
+      "default": "",
+      "description": "Space-separated ROS package suffixes to install in addition to the selected metapackage, without the ros-<distro>- prefix."
+    },
     "workspace": {
       "type": "string",
       "default": "${containerWorkspaceFolder}",

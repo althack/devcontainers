@@ -4,6 +4,7 @@ set -euo pipefail
 
 ros_distro="${DISTRO:-auto}"
 ros_package="${PACKAGE:-desktop}"
+ros_additional_packages="${ADDITIONALPACKAGES:-}"
 ros_workspace="${WORKSPACE:-${_REMOTE_USER_HOME:-/workspaces}/ros2_ws}"
 feature_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 distribution_config="${feature_dir}/distributions.json"
@@ -130,8 +131,17 @@ dpkg -i "${ros_apt_source_package}"
 rm -f "${ros_apt_source_package}"
 
 apt-get update
+additional_apt_packages=()
+if [[ -n "${ros_additional_packages}" ]]; then
+    read -r -a additional_package_names <<<"${ros_additional_packages}"
+    for additional_package_name in "${additional_package_names[@]}"; do
+        additional_apt_packages+=("ros-${ros_distro}-${additional_package_name}")
+    done
+fi
+
 apt-get install -y --no-install-recommends \
     "ros-${ros_distro}-${ros_package}" \
+    "${additional_apt_packages[@]}" \
     python3-colcon-common-extensions \
     python3-rosdep \
     python3-vcstool \

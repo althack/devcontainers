@@ -16,7 +16,7 @@ Forward a local Linux host's X11 display into a development container.
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
 | x11Display | Set DISPLAY for X11 clients launched from the container. | string | :0 |
-| softwareGL | Force Mesa software rendering with LIBGL_ALWAYS_SOFTWARE=1. | boolean | false |
+| softwareGL | Force Mesa software rendering with LIBGL_ALWAYS_SOFTWARE=1. | boolean | true |
 
 ## Linux host requirements
 
@@ -27,17 +27,15 @@ Docker Desktop on macOS or Windows, remote Docker daemons, or Codespaces.
 The container is granted access to the host X server. Only use it with
 development containers you trust.
 
+The `/tmp/.X11-unix` mount remains writable because Dev Containers may create
+forwarded X11 sockets there, including VS Code display-forwarding sockets.
+
 ## Xauthority
 
 For modern Wayland/XWayland desktops, the feature auto-discovers the mounted `.mutter-Xwaylandauth.*` file from `XDG_RUNTIME_DIR`.
 
-For classic Xorg setups where the authority file lives outside `XDG_RUNTIME_DIR` (often `~/.Xauthority`), add an explicit mount in the consuming `devcontainer.json`:
-
-```json
-"mounts": [
-  "source=${localEnv:XAUTHORITY},target=/tmp/devcontainer-xauthority-host,type=bind,readonly"
-]
-```
+For classic Xorg setups where the authority file lives outside `XDG_RUNTIME_DIR`,
+the Feature automatically mounts the host file named by `XAUTHORITY`.
 
 The feature always exposes the stable in-container path `/tmp/devcontainer-xauthority` through `XAUTHORITY`.
 

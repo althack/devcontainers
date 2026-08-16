@@ -2,7 +2,7 @@
 set -euo pipefail
 
 x11_display="${X11DISPLAY:-:0}"
-software_gl="${SOFTWAREGL:-false}"
+software_gl="${SOFTWAREGL:-true}"
 
 cat >/etc/profile.d/devcontainer-x11-gui.sh <<EOF
 host_runtime_dir="/tmp/devcontainer-host-runtime"
@@ -16,7 +16,7 @@ if [ -z "\${XDG_RUNTIME_DIR:-}" ]; then
     export XDG_RUNTIME_DIR="\${container_runtime_dir}"
 fi
 
-if [ -e "\${mounted_xauthority}" ]; then
+if [ -f "\${mounted_xauthority}" ]; then
     ln -snf "\${mounted_xauthority}" "\${xauthority_target}"
 else
     set -- "\${host_runtime_dir}"/.mutter-Xwaylandauth.*

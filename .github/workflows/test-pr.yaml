@@ -52,6 +52,9 @@ jobs:
       - name: Prepare PulseAudio test environment
         run: bash features/test/linux-pulseaudio-forwarding/prepare-host.sh
 
+      - name: Prepare X11 composition fixtures
+        run: bash features/test/linux-pulseaudio-forwarding/prepare-x11-host.sh
+
       - name: Test PulseAudio Feature
         run: |
           devcontainer features test \

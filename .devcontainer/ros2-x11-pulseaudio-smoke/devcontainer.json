@@ -1,0 +1,12 @@
+{
+  "name": "ros2-x11-pulseaudio-smoke",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "../local-features/ros2": {},
+    "../local-features/linux-x11-forwarding": {
+      "x11Display": "${localEnv:DISPLAY}"
+    },
+    "../local-features/linux-pulseaudio-forwarding": {}
+  },
+  "postCreateCommand": "bash -lc 'set -eu; ros2 pkg prefix rviz2 >/dev/null; command -v colcon >/dev/null; command -v rosdep >/dev/null; command -v vcs >/dev/null; test \"${PULSE_SERVER}\" = unix:/tmp/devcontainer-pulse/native; test -e /tmp/devcontainer-pulse/native; test -n \"${DISPLAY:-}\"; echo \"ROS 2, X11, and PulseAudio forwarding are available.\"'"
+}

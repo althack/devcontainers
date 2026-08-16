@@ -12,13 +12,9 @@
       "description": "Set DISPLAY for X11 clients launched from the container."
     },
     "softwareGL": {
-      "type": "string",
-      "default": "1",
-      "proposals": [
-        "0",
-        "1"
-      ],
-      "description": "Set LIBGL_ALWAYS_SOFTWARE for GPU compatibility."
+      "type": "boolean",
+      "default": false,
+      "description": "Force Mesa software rendering with LIBGL_ALWAYS_SOFTWARE=1."
     }
   },
   "containerEnv": {

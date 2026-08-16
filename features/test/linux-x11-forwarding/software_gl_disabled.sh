@@ -3,7 +3,7 @@ set -e
 
 source dev-container-features-test-lib
 
-check "software rendering can be disabled through shell init" bash -lc '[ "${LIBGL_ALWAYS_SOFTWARE:-}" = "0" ]'
+check "software rendering remains unset when disabled" bash -lc '[ -z "${LIBGL_ALWAYS_SOFTWARE:-}" ]'
 check "Qt uses the X11 backend by default" bash -lc '[ "${QT_QPA_PLATFORM:-}" = "xcb" ]'
 check "x11 socket directory is mounted" mountpoint -q /tmp/.X11-unix
 check "runtime directory is mounted" mountpoint -q /tmp/devcontainer-host-runtime

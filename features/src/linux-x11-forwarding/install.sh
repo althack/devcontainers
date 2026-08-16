@@ -2,7 +2,7 @@
 set -euo pipefail
 
 x11_display="${X11DISPLAY:-:0}"
-software_gl="${SOFTWAREGL:-1}"
+software_gl="${SOFTWAREGL:-false}"
 
 cat >/etc/profile.d/devcontainer-x11-gui.sh <<EOF
 host_runtime_dir="/tmp/devcontainer-host-runtime"
@@ -28,7 +28,11 @@ else
 fi
 
 export DISPLAY="${x11_display}"
-export LIBGL_ALWAYS_SOFTWARE="${software_gl}"
+if [ "${software_gl}" = "1" ] || [ "${software_gl}" = "true" ]; then
+    export LIBGL_ALWAYS_SOFTWARE=1
+else
+    unset LIBGL_ALWAYS_SOFTWARE
+fi
 export QT_QPA_PLATFORM="xcb"
 export XAUTHORITY="\${xauthority_target}"
 EOF

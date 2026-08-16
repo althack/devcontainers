@@ -5,7 +5,7 @@ source dev-container-features-test-lib
 
 check "DISPLAY defaults to :0" bash -lc '[ "${DISPLAY:-}" = ":0" ]'
 check "XAUTHORITY is set to fixed path" bash -c '[ "${XAUTHORITY:-}" = "/tmp/devcontainer-xauthority" ]'
-check "software rendering defaults through shell init" bash -lc '[ "${LIBGL_ALWAYS_SOFTWARE:-}" = "1" ]'
+check "software rendering is not forced by default" bash -lc '[ -z "${LIBGL_ALWAYS_SOFTWARE:-}" ]'
 check "Qt uses the X11 backend by default" bash -lc '[ "${QT_QPA_PLATFORM:-}" = "xcb" ]'
 check "XDG runtime directory is private and writable" bash -lc '[ "${XDG_RUNTIME_DIR:-}" = "/tmp/devcontainer-runtime-$(id -u)" ] && [ -d "${XDG_RUNTIME_DIR}" ] && [ -w "${XDG_RUNTIME_DIR}" ] && [ "$(stat -c %a "${XDG_RUNTIME_DIR}")" = "700" ]'
 check "x11 socket directory exists" bash -c '[ -d /tmp/.X11-unix ]'

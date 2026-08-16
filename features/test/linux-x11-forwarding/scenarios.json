@@ -14,7 +14,15 @@
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
       "linux-x11-forwarding": {
-        "softwareGL": "0"
+        "softwareGL": false
+      }
+    }
+  },
+  "software_gl_enabled": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "linux-x11-forwarding": {
+        "softwareGL": true
       }
     }
   }

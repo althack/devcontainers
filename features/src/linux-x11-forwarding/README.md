@@ -16,7 +16,7 @@ Forward a local Linux host's X11 display into a development container.
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
 | x11Display | Set DISPLAY for X11 clients launched from the container. | string | :0 |
-| softwareGL | Set LIBGL_ALWAYS_SOFTWARE for GPU compatibility. | string | 1 |
+| softwareGL | Force Mesa software rendering with LIBGL_ALWAYS_SOFTWARE=1. | boolean | false |
 
 ## Linux host requirements
 

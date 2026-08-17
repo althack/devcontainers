@@ -6,6 +6,12 @@
   "containerEnv": {
     "GZ_VERSION": "${templateOption:distro}"
   },
+  "features": {
+    "ghcr.io/althack/devcontainers/linux-x11-forwarding:0": {
+      "x11Display": "${localEnv:DISPLAY}"
+    },
+    "ghcr.io/althack/devcontainers/linux-pulseaudio-forwarding:0": {}
+  },
   "runArgs": [
     "--network=host",
     "--ipc=host",

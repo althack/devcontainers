@@ -14,7 +14,10 @@
     "--security-opt=apparmor:unconfined"
   ],
   "features": {
-    "../local-features/linux-x11-forwarding": {}
+    "../local-features/linux-x11-forwarding": {
+      "x11Display": "${localEnv:DISPLAY}"
+    },
+    "../local-features/linux-pulseaudio-forwarding": {}
   },
   "customizations": {
     "vscode": {

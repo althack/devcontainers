@@ -124,6 +124,7 @@ jobs:
           - osrf_ros
           - upstream_ros
           - workspace_overlay
+          - shells
     steps:
       - uses: actions/checkout@v6
 

@@ -13,7 +13,7 @@
     },
     "softwareGL": {
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Force Mesa software rendering with LIBGL_ALWAYS_SOFTWARE=1."
     }
   },
@@ -21,8 +21,9 @@
     "XAUTHORITY": "/tmp/devcontainer-xauthority"
   },
   "mounts": [
-    "type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix,readonly",
-    "type=bind,source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/devcontainer-host-runtime,readonly"
+    "type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix",
+    "type=bind,source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/devcontainer-host-runtime,readonly",
+    "type=bind,source=${localEnv:XAUTHORITY:/dev/null},target=/tmp/devcontainer-xauthority-host,readonly"
   ],
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"

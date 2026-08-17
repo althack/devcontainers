@@ -2,7 +2,10 @@
   "name": "ros2-x11-pulseaudio-smoke",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "features": {
-    "../local-features/ros2": {},
+    "../local-features/ros2": {
+      "package": "ros-base",
+      "additionalPackages": "rviz2 ros-gz"
+    },
     "../local-features/linux-x11-forwarding": {
       "x11Display": "${localEnv:DISPLAY}"
     },

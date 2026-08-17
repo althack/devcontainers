@@ -1,9 +1,6 @@
 {
   "host_forwarding_env": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "mounts": [
-      "source=${localEnv:XAUTHORITY},target=/tmp/devcontainer-xauthority-host,type=bind,readonly"
-    ],
     "features": {
       "linux-x11-forwarding": {
         "x11Display": "${localEnv:DISPLAY}"
@@ -24,6 +21,12 @@
       "linux-x11-forwarding": {
         "softwareGL": true
       }
+    }
+  },
+  "xwayland_authority_fallback": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "linux-x11-forwarding": {}
     }
   }
 }

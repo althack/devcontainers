@@ -16,7 +16,7 @@ Install ROS 2 and the tools needed to develop ROS packages.
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
 | distro | ROS 2 distribution to install. By default, select the recommended distribution for the container's Ubuntu release. | string | auto |
-| package | ROS 2 metapackage to install. | string | desktop |
+| package | ROS 2 metapackage to install. Common variants are suggested. | string | desktop |
 | additionalPackages | Space-separated ROS package suffixes to install in addition to the selected metapackage, without the ros-<distro>- prefix. | string | - |
 | workspace | Workspace whose install/setup.sh file should be sourced when present. | string | ${containerWorkspaceFolder} |
 

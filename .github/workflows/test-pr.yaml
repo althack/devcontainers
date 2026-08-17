@@ -119,6 +119,7 @@ jobs:
         scenario:
           - humble
           - kilted
+          - ros_core
           - lyrical
           - osrf_ros
           - upstream_ros

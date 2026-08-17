@@ -36,5 +36,15 @@
   "workspace_overlay": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
     "features": { "ros2": { "package": "ros-base", "workspace": "/tmp/ros2_overlay" } }
+  },
+  "shells": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+    "features": {
+      "ros2": {
+        "distro": "jazzy",
+        "package": "ros-base",
+        "workspace": "/tmp/ros2_shell_overlay"
+      }
+    }
   }
 }

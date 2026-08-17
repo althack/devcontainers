@@ -164,16 +164,26 @@ chmod 0644 /etc/profile.d/ros2.sh
 
 remote_user="${_REMOTE_USER:-${_CONTAINER_USER:-}}"
 remote_user_home="${_REMOTE_USER_HOME:-${_CONTAINER_USER_HOME:-}}"
+ros_profile_line='[ -f /etc/profile.d/ros2.sh ] && . /etc/profile.d/ros2.sh'
+
 if [[ -n "${remote_user}" && -n "${remote_user_home}" && -d "${remote_user_home}" ]]; then
-    shell_init="${remote_user_home}/.bashrc"
-    touch "${shell_init}"
-    if ! grep -Fq '[ -f /etc/profile.d/ros2.sh ] && . /etc/profile.d/ros2.sh' "${shell_init}"; then
-        printf '\n%s\n' '[ -f /etc/profile.d/ros2.sh ] && . /etc/profile.d/ros2.sh' >> "${shell_init}"
+    shell_inits=("${remote_user_home}/.bashrc")
+    if command -v zsh >/dev/null 2>&1; then
+        shell_inits+=("${remote_user_home}/.zshrc")
     fi
-    if ! grep -Fq '[ -f /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash ] && . /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash' "${shell_init}"; then
-        printf '%s\n' '[ -f /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash ] && . /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash' >> "${shell_init}"
+    for shell_init in "${shell_inits[@]}"; do
+        touch "${shell_init}"
+        if ! grep -Fq "${ros_profile_line}" "${shell_init}"; then
+            printf '\n%s\n' "${ros_profile_line}" >> "${shell_init}"
+        fi
+        chown "${remote_user}:$(id -gn "${remote_user}")" "${shell_init}"
+    done
+
+    bash_completion_line='[ -f /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash ] && . /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash'
+    bash_init="${remote_user_home}/.bashrc"
+    if ! grep -Fq "${bash_completion_line}" "${bash_init}"; then
+        printf '%s\n' "${bash_completion_line}" >> "${bash_init}"
     fi
-    chown "${remote_user}:$(id -gn "${remote_user}")" "${shell_init}"
 else
     echo "No effective Dev Container user was provided; skipping user-specific shell configuration."
 fi

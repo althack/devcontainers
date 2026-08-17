@@ -14,7 +14,10 @@
     "--security-opt=apparmor:unconfined"
   ],
   "features": {
-    "../local-features/linux-x11-forwarding": {}
+    "ghcr.io/althack/devcontainers/linux-x11-forwarding:0": {
+      "x11Display": "${localEnv:DISPLAY}"
+    },
+    "ghcr.io/althack/devcontainers/linux-pulseaudio-forwarding:0": {}
   },
   "customizations": {
     "vscode": {

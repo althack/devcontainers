@@ -10,3 +10,29 @@ The final container image tag is `<distro>-<imageVariant>`. For example:
 - `distro=jetty` and `imageVariant=base` uses `althack/gz:jetty-base`
 
 This template uses host networking and host IPC so simulator and robotics tooling can communicate with local services more easily.
+
+The Gazebo image supplies its ROS 2 environment. The template composes the
+Linux X11 forwarding and Linux PulseAudio forwarding Features. The
+host-integration Features target native Linux hosts
+with X11/XWayland and a PulseAudio-compatible socket; they do not add custom
+WSLg, macOS, Windows, or GPU plumbing.
+
+The X11 Feature mounts the host `XAUTHORITY` file read-only when set.
+Wayland/XWayland hosts can use the runtime-directory authority discovery
+provided by the Feature.
+
+The template relies on the X11 Feature's default of leaving
+`LIBGL_ALWAYS_SOFTWARE` unset, allowing Gazebo to use the available native
+OpenGL path. Set the X11 Feature's `softwareGL` option to `true` only when
+software rendering is required.
+
+Runtime flags:
+
+- `--network=host` is retained for ROS/Gazebo discovery and communication with
+  host services.
+- `--ipc=host` is retained for existing Gazebo/ROS shared-memory behavior.
+- `--cap-add=SYS_PTRACE` is retained for debugger/profiling workflows.
+- `--security-opt=seccomp:unconfined` is retained for the existing simulator
+  development image compatibility.
+- `--security-opt=apparmor:unconfined` is retained for compatibility with
+  hosts that enforce AppArmor policies around simulator processes.

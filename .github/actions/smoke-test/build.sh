@@ -64,7 +64,7 @@ if [ "${TEMPLATE_ID}" = "gz" ]; then
     mkdir -p "${SRC_DIR}/.devcontainer/local-features"
     for feature in linux-x11-forwarding linux-pulseaudio-forwarding; do
         cp -R "features/src/${feature}" "${SRC_DIR}/.devcontainer/local-features/${feature}"
-        sed -i "s#ghcr.io/althack/devcontainers/${feature}:0#./local-features/${feature}#g" \
+        sed -E -i "s#ghcr.io/althack/devcontainers/${feature}:[0-9]+#./local-features/${feature}#g" \
             "${SRC_DIR}/.devcontainer/devcontainer.json"
     done
 fi

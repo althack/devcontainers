@@ -178,6 +178,4 @@ else
     echo "No effective Dev Container user was provided; skipping user-specific shell configuration."
 fi
 
-rm -rf /var/lib/apt/lists/*
-
 echo "Configured ROS 2 ${ros_distro} (${ros_package}) development environment."

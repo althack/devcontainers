@@ -16,6 +16,15 @@ with (feature_root / "devcontainer-feature.json").open(encoding="utf-8") as stre
 ubuntu_releases = config["ubuntuReleases"]
 proposals = manifest["options"]["distro"]["proposals"]
 default = manifest["options"]["distro"]["default"]
+package_proposals = manifest["options"]["package"]["proposals"]
+expected_package_proposals = {
+    "ros-core",
+    "ros-base",
+    "desktop",
+    "perception",
+    "simulation",
+    "desktop-full",
+}
 
 if set(config) != {"ubuntuReleases"}:
     raise SystemExit("distributions.json must contain only ubuntuReleases")
@@ -50,5 +59,13 @@ if len(proposals) != len(distributions) + 1:
 
 if default != "auto":
     raise SystemExit("The default ROS 2 distro option must be auto")
+
+if set(package_proposals) != expected_package_proposals:
+    raise SystemExit(
+        "ROS 2 package proposals must contain exactly the standard variants"
+    )
+
+if len(package_proposals) != len(expected_package_proposals):
+    raise SystemExit("ROS 2 package proposals must not contain duplicates")
 
 print(f"Validated {len(distributions)} ROS 2 distribution definitions")

@@ -21,11 +21,15 @@
     "package": {
       "type": "string",
       "proposals": [
+        "ros-core",
         "ros-base",
-        "desktop"
+        "desktop",
+        "perception",
+        "simulation",
+        "desktop-full"
       ],
       "default": "desktop",
-      "description": "ROS 2 metapackage to install."
+      "description": "ROS 2 metapackage to install. Common variants are suggested."
     },
     "additionalPackages": {
       "type": "string",

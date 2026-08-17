@@ -27,15 +27,6 @@ if [[ "${ID:-}" != "ubuntu" ]]; then
     exit 1
 fi
 
-case "${ros_package}" in
-    ros-base | desktop)
-        ;;
-    *)
-        echo "Unsupported ROS 2 package: ${ros_package}." >&2
-        exit 1
-        ;;
-esac
-
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update

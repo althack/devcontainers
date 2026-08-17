@@ -21,6 +21,8 @@ if [[ "${version}" == "0.0.0" ]]; then
     exit 1
 fi
 
+major="${version%%.*}"
+
 mapfile -t manifest_files < <(
     find features/src templates/src -type f \
         \( -name 'devcontainer-feature.json' -o -name 'devcontainer-template.json' \) \
@@ -40,6 +42,27 @@ for manifest_file in "${manifest_files[@]}"; do
     echo "Updated ${manifest_file} to version ${version}"
 done
 
+mapfile -t template_json_files < <(find templates/src -type f -name '*.json' | sort)
+
+for json_file in "${template_json_files[@]}"; do
+    tmp_file="$(mktemp)"
+    jq --arg major "${major}" '
+        walk(
+            if type == "string" then
+                gsub(
+                    "ghcr\\.io/althack/devcontainers/(?<feature>[A-Za-z0-9._-]+):0";
+                    "ghcr.io/althack/devcontainers/\\(.feature):\\($major)"
+                )
+            else
+                .
+            end
+        )
+    ' "${json_file}" > "${tmp_file}"
+    chmod --reference="${json_file}" "${tmp_file}"
+    mv "${tmp_file}" "${json_file}"
+    echo "Updated internal Feature references in ${json_file} to major ${major}"
+done
+
 for manifest_file in "${manifest_files[@]}"; do
     manifest_version="$(jq -r '.version' "${manifest_file}")"
     if [[ "${manifest_version}" != "${version}" ]]; then
@@ -47,3 +70,14 @@ for manifest_file in "${manifest_files[@]}"; do
         exit 1
     fi
 done
+
+while IFS= read -r internal_reference; do
+    if [[ ! "${internal_reference}" =~ ^ghcr\.io/althack/devcontainers/[^:]+:${major}$ ]]; then
+        echo "${internal_reference} does not use release major ${major}." >&2
+        exit 1
+    fi
+done < <(
+    for json_file in "${template_json_files[@]}"; do
+        jq -r '.. | strings | select(test("^ghcr\\.io/althack/devcontainers/[^:]+:[^:]+$"))' "${json_file}"
+    done
+)

@@ -50,6 +50,25 @@ export DOCKER_BUILDKIT=1
 echo "(*) Installing @devcontainer/cli"
 npm install --global @devcontainers/cli@0.88.0
 
+if [ "${TEMPLATE_ID}" = "gz" ]; then
+    # The Gazebo template composes host-integration Features. Provide the
+    # local Feature sources and narrow fixture paths needed for CI validation.
+    GZ_RUNTIME_DIR="/tmp/devcontainers-gz-runtime"
+    GZ_XAUTHORITY="/tmp/devcontainers-gz-xauthority"
+    mkdir -p /tmp/.X11-unix "${GZ_RUNTIME_DIR}/pulse"
+    touch "${GZ_RUNTIME_DIR}/pulse/native" "${GZ_RUNTIME_DIR}/.mutter-Xwaylandauth.test" "${GZ_XAUTHORITY}"
+    export DISPLAY=":99"
+    export XDG_RUNTIME_DIR="${GZ_RUNTIME_DIR}"
+    export XAUTHORITY="${GZ_XAUTHORITY}"
+
+    mkdir -p "${SRC_DIR}/.devcontainer/local-features"
+    for feature in linux-x11-forwarding linux-pulseaudio-forwarding; do
+        cp -R "features/src/${feature}" "${SRC_DIR}/.devcontainer/local-features/${feature}"
+        sed -i "s#ghcr.io/althack/devcontainers/${feature}:0#./local-features/${feature}#g" \
+            "${SRC_DIR}/.devcontainer/devcontainer.json"
+    done
+fi
+
 echo "Building Dev Container"
 ID_LABEL="test-container=${TEMPLATE_ID}"
 devcontainer up --id-label ${ID_LABEL} --workspace-folder "${SRC_DIR}"

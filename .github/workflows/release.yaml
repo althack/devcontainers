@@ -23,7 +23,6 @@ jobs:
     permissions:
       packages: write
       contents: write
-      pull-requests: write
     steps:
       - name: Resolve release settings
         id: settings

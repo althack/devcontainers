@@ -46,9 +46,5 @@
         "workspace": "/tmp/ros2_shell_overlay"
       }
     }
-  },
-  "workspace_build": {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
-    "features": { "ros2": { "package": "ros-base" } }
   }
 }

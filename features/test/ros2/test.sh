@@ -15,4 +15,22 @@ check "absent overlay does not break shell startup" bash -lc 'command -v ros2 >/
 check "effective user bashrc sources ROS profile once" bash -lc 'test "$(grep -Fc "[ -f /etc/profile.d/ros2.sh ] && . /etc/profile.d/ros2.sh" /home/vscode/.bashrc)" -eq 1'
 check "colcon completion is enabled" bash -ic 'complete -p colcon >/dev/null'
 
+test_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+workspace="/tmp/ros2_minimal_workspace"
+
+mkdir -p "${workspace}/src"
+cp -R "${test_dir}/assets/minimal_package" "${workspace}/src/"
+cd "${workspace}"
+
+check "rosdep metadata can be updated" rosdep update
+check "workspace dependencies can be resolved" rosdep install --from-paths src --ignore-src --rosdistro "${ROS_DISTRO}" -y
+check "minimal workspace builds" colcon build --event-handlers console_direct+
+
+# shellcheck disable=SC1091
+source install/setup.bash
+
+check "minimal workspace tests run" colcon test --event-handlers console_direct+
+check "minimal workspace tests pass" colcon test-result --verbose
+check "installed workspace executable runs" "${workspace}/install/devcontainers_minimal/lib/devcontainers_minimal/devcontainers_minimal_node"
+
 reportResults

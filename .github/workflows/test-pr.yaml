@@ -119,7 +119,6 @@ jobs:
           - lyrical
           - osrf_ros
           - upstream_ros
-          - workspace_build
           - workspace_overlay
           - shells
     steps:
